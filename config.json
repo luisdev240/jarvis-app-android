@@ -1,0 +1,9 @@
+{
+    "groq_api_key": "",
+    "theme": "Orange",
+    "language": "Français",
+    "maintenance_mode": false,
+    "default_city": "",
+    "appointments": [],
+    "shopping_list": []
+}
