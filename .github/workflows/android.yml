@@ -2,19 +2,18 @@ name: Build APK
 
 on:
   push:
-    branches:
-      - main
+    branches: [ main ]
   workflow_dispatch:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
 
     steps:
       - name: Télécharger le projet
         uses: actions/checkout@v4
 
-      - name: Installer Java
+      - name: Installer Java 17
         uses: actions/setup-java@v4
         with:
           distribution: temurin
@@ -25,17 +24,21 @@ jobs:
         with:
           python-version: '3.11'
 
+      - name: Installer les dépendances Linux
+        run: |
+          sudo apt update
+          sudo apt install -y git zip unzip autoconf libtool pkg-config zlib1g-dev libncurses5-dev libncursesw5-dev cmake libffi-dev libssl-dev
+
       - name: Installer Buildozer
         run: |
           python -m pip install --upgrade pip
-          pip install buildozer cython
+          pip install buildozer Cython
 
-      - name: Construire l'APK
-  run: |
-    yes | sdkmanager --licenses || true
-    buildozer android debug
+      - name: Compiler l'APK
+        run: |
+          buildozer android debug
 
-      - name: Envoyer l'APK
+      - name: Publier l'APK
         uses: actions/upload-artifact@v4
         with:
           name: Jarvis-APK
