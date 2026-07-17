@@ -31,10 +31,9 @@ jobs:
           pip install buildozer cython
 
       - name: Construire l'APK
-        run: |
-          sudo apt update
-          sudo apt install -y zip unzip git openjdk-17-jdk
-          buildozer android debug
+  run: |
+    yes | sdkmanager --licenses || true
+    buildozer android debug
 
       - name: Envoyer l'APK
         uses: actions/upload-artifact@v4
